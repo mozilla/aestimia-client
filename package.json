@@ -1,0 +1,16 @@
+{
+  "name": "aestimia-client",
+  "version": "0.1.0",
+  "description": "A client for the Aestimia API",
+  "main": "index.js",
+  "author": "Mozilla Open Badges http://openbadges.org",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mozilla/aestimia-client.git"
+  },
+  "license": "MPLv2",
+  "dependencies": {
+    "request": "~2.27.0",
+    "underscore": "~1.5.2"
+  }
+}

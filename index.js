@@ -61,7 +61,7 @@ exports = module.exports = function (config) {
 
         if (!_.isArray(evidence))
           return callback(new TypeError('evidence not of type `array`'));
-          
+
         if (!evidence.length && wordcount < MIN_WORDS)
           return callback(new Error('Insufficient evidence for this application'));
 
@@ -151,10 +151,9 @@ exports = module.exports = function (config) {
 
         // Bail early, if there are no reviews - nothing to do
         if (!reviews.length) {
-          return callback(null, {
-            review: null,
-            satisfied: false
-          });
+          submission.review = null;
+          submission.accepted = false;
+          return callback(null, submission);
         }
 
         // Sort the reviews by (ascending) date, if required
@@ -179,13 +178,12 @@ exports = module.exports = function (config) {
           });
         }
 
-        callback(null, {
-          review: review,
-          accepted: satisfied
-        });
+        submission.review = review;
+        submission.accepted = satisfied;
+
+        callback(null, submission);
       });
     }
-
   });
 
   aestimia.defaultOptions = {

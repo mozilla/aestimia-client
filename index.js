@@ -196,5 +196,28 @@ exports = module.exports = function (config) {
     }
   };
 
+  /**
+   * Tell Aestimia server that a review has been processed
+   *
+   * @param {Application} application The <application> the review belongs to
+   * @param {string} reviewId The ID of the review to be processed
+   * @param {function} callback Callback function
+   */
+  aestimia.process = function (application, reviewId, callback) {
+    console.log('Notify:', arguments);
+
+    var api = this;
+
+    var submissionId = application.submissionId;
+
+    if (!submissionId)
+      return callback(new Error('Application has not yet been submitted'));
+
+    this.post('/submissions/' + submissionId + '/reviews/' + reviewId, function (err) {
+      if (typeof callback === 'function')
+        callback(err);
+    });
+  }
+
   return aestimia;
 }

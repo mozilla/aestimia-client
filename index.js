@@ -217,5 +217,49 @@ exports = module.exports = function (config) {
     });
   }
 
+  /**
+   * Middleware endpoint to handle callbacks from Aestimia server when the state
+   * of an application changes
+   * e.g.
+   *  app.use('/mount/point', aestimia.endpoint(function(submission, callback) {
+   *    // Process the submission here
+   *    callback(); // when finished processing, optionally with an error
+   *  }));
+   *
+   * @param {function} handler Function to process incoming submission
+   */
+  aestimia.endpoint = function (handler) {
+    return function (req, res, next) {
+      if (req.url !== '/')
+        return next();
+
+      function end (err) {
+        if (err)
+          return res.status(err.status || 400).json({error: err.message || err});
+
+        return res.status(202).send('');
+      }
+
+      var submissionId = req.body['_id'];
+
+      if (!submissionId)
+        return end(new Error('Could not find _id in request'));
+
+      aestimia.update({submissionId: submissionId}, function (err, submission) {
+        if (err)
+          return end(err);
+
+        handler(submission, function (err) {
+          if (err)
+            return end(err);
+
+          aestimia.process({submissionId: submissionId}, submission.review._id, logger);
+          end();
+        });
+      });
+
+    }
+  }
+
   return aestimia;
 }

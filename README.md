@@ -74,7 +74,7 @@ The following 'interfaces' are expected when using an Aestimia client. All field
 * `email`  
   the email address of the applicant *(not required)*
 * `sensitive`  
-  a boolean value indicating whether this a 'sensitive' applicant, e.g. a young learner. If this is `true`, canned responses will be displayed to the auditor, and any email address will be withheld.
+  a boolean value indicating whether this a 'sensitive' applicant, e.g. a young learner. If this is `true`, canned responses will be displayed to the auditor, and any email address will be withheld *(not required)*.
 
 **`Badge`:**
 

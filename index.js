@@ -1,6 +1,8 @@
 const Api = require('./api');
 const _ = require('underscore');
 
+const models = require('./models');
+
 const DEFAULT_MIN_WORDS = 0;
 const DEFAULT_CANNED_RESPONSES = [
   'You did a great job!',
@@ -260,6 +262,10 @@ exports = module.exports = function (config) {
 
     }
   }
+
+  Object.keys(models).forEach(function(model) {
+    aestimia[model] = models[model];
+  });
 
   return aestimia;
 }

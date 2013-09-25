@@ -36,7 +36,9 @@ const Model = function (name, properties, defaultProperty) {
         var type = properties[property].type;
 
         if (Object.toString.call(type) === '[object Array]') {
-          if (!isType(value, 'array'))
+          if (!isType(value, 'array')) {
+            throw new TypeError('Property of wrong type: ' + property + '; expecting type: array');
+          }
         } else {
           if (!isType(value, type))
             throw new TypeError('Property of wrong type: ' + property + '; expecting type: ' + type);

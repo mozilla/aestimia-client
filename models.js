@@ -29,10 +29,14 @@ const Model = function (name, properties, defaultProperty) {
     } else {
       Object.keys(properties).forEach(function (property) {
         if (data[property] === undefined) {
-          if (properties[property].required)
+          if (properties[property].hasOwnProperty('default')) {
+            this[property] = properties[property].default;
+          } else if (properties[property].required) {
             throw new ReferenceError('Missing required property: ' + property);
-          else
-            return;
+          } else {
+            this[property] = undefined;
+          }
+          return;
         }
 
         var value = data[property];

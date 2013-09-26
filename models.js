@@ -3,7 +3,10 @@ const Model = function (name, properties, defaultProperty) {
     if (!type)
       return false;
 
-    var objType = Object.prototype.toString.call(obj).replace('/^\[object (.*)\]$/', '$1').toLowerCase();
+    if (Object.prototype.toString.call(type) === '[object Array]')
+      return type.some(function(type) { return isType(obj, type); });
+
+    var objType = Object.prototype.toString.call(obj).replace(/^\[object (.*)\]$/, '$1').toLowerCase();
     if (objType === (type).toString().toLowerCase())
       return true;
 
@@ -35,8 +38,16 @@ const Model = function (name, properties, defaultProperty) {
         var value = data[property];
         var type = properties[property].type;
 
-        if (Object.toString.call(type) === '[object Array]') {
+        if (Object.prototype.toString.call(type) === '[object Array]') {
           if (!isType(value, 'array'))
+            throw new TypeError('Property of wrong type: ' + property + '; expecting type: array');
+
+          if (type.length) {
+            value.forEach(function(item) {
+              if (!isType(item, type))
+                throw new TypeError('Property contains items of wrong type: ' + property + '; expecting type(s): ' + type.join(', '));
+            });
+          }
         } else {
           if (!isType(value, type))
             throw new TypeError('Property of wrong type: ' + property + '; expecting type: ' + type);

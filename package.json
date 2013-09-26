@@ -8,9 +8,16 @@
     "type": "git",
     "url": "http://github.com/mozilla/aestimia-client.git"
   },
+  "scripts": {
+    "test": "./node_modules/.bin/tap-prettify test/*test.js"
+  },
   "license": "MPLv2",
   "dependencies": {
     "request": "~2.27.0",
     "underscore": "~1.5.2"
+  },
+  "devDependencies": {
+    "tap-prettify": "0.0.2",
+    "tap": "~0.4.4"
   }
 }

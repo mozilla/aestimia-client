@@ -42,19 +42,21 @@ const Model = function (name, properties, defaultProperty) {
         var value = data[property];
         var type = properties[property].type;
 
-        if (Object.prototype.toString.call(type) === '[object Array]') {
-          if (!isType(value, 'array'))
-            throw new TypeError('Property of wrong type: ' + property + '; expecting type: array');
+        if (type !== undefined && type !== null) {
+          if (Object.prototype.toString.call(type) === '[object Array]') {
+            if (!isType(value, 'array'))
+              throw new TypeError('Property of wrong type: ' + property + '; expecting type: array');
 
-          if (type.length) {
-            value.forEach(function(item) {
-              if (!isType(item, type))
-                throw new TypeError('Property contains items of wrong type: ' + property + '; expecting type(s): ' + type.join(', '));
-            });
+            if (type.length) {
+              value.forEach(function(item) {
+                if (!isType(item, type))
+                  throw new TypeError('Property contains items of wrong type: ' + property + '; expecting type(s): ' + type.join(', '));
+              });
+            }
+          } else {
+            if (!isType(value, type))
+              throw new TypeError('Property of wrong type: ' + property + '; expecting type: ' + type);
           }
-        } else {
-          if (!isType(value, type))
-            throw new TypeError('Property of wrong type: ' + property + '; expecting type: ' + type);
         }
 
         this[property] = value;

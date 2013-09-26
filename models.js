@@ -33,7 +33,7 @@ const Model = function (name, properties, defaultProperty) {
             this[property] = properties[property].default;
           } else if (properties[property].required) {
             throw new ReferenceError('Missing required property: ' + property);
-          } else {
+          } else if (properties[property].type !== 'function') {
             this[property] = undefined;
           }
           return;
@@ -98,13 +98,16 @@ const Application = new Model('Application', {
   getCriteriaUrl: {type: 'function'},
   evidence: {type: 'array'},
   getEvidence: {type: 'function'},
+  url: {type: 'string'},
+  getUrl: {type: 'function'},
   submissionId: {type: 'string'}
 }, 'submissionId');
 
 Application.prototype.getApplicant = Model.propertyWrapper('applicant');
 Application.prototype.getBadge = Model.propertyWrapper('badge');
-Application.prototype.getCallbackUrl = Model.propertyWrapper('callbackUrl');
-Application.prototype.getCriteriaUrl = Model.propertyWrapper('criteriaUrl');
+Application.prototype.getCallbackUrl = function () { return this.callbackUrl; };
+Application.prototype.getCriteriaUrl = function () { return this.criteriaUrl; };
+Application.prototype.getUrl = function () { return this.url; };
 Application.prototype.getEvidence = Model.propertyWrapper('evidence');
 
 exports.Application = Application
@@ -113,9 +116,9 @@ exports.Application = Application
  * Example Applicant model, which can be used with the Aestimia API
  */
 const Applicant = new Model('Applicant', {
-  email: {type: 'string'},
+  email: {type: 'string', required: true},
   sensitive: {type: 'boolean'}
-});
+}, 'email');
 
 exports.Applicant = Applicant;
 
@@ -123,7 +126,7 @@ exports.Applicant = Applicant;
  * Example Badge model, which can be used with the Aestimia API
  */
 const Badge = new Model('Badge', {
-  categories: {type: 'array'},
+  categories: {type: 'array', default: []},
   description: {type: 'string', required: true},
   image: {type: 'string', required: true},
   name: {type: 'string', required: true},

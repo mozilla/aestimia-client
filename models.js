@@ -74,6 +74,8 @@ Model.propertyWrapper = function (property) {
   }
 }
 
+exports._Model = Model;
+
 /**
  * Example Application model, which can be used with the Aestimia API
  */

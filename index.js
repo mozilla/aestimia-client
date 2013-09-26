@@ -80,6 +80,7 @@ exports = module.exports = function (config) {
               rubric = {items: rubric};
 
             var submission = {
+              learner: applicant.email,
               criteriaUrl: application.getCriteriaUrl(badge),
               onChangeUrl: application.getCallbackUrl(badge),
               achievement: {
@@ -119,15 +120,13 @@ exports = module.exports = function (config) {
                 reflection: item.description,
                 mediaType: type
               });
+            });
 
-              LOGGER(submission);
+            api.post('/submission', {json:submission}, function (err, rsp) {
+              if (err)
+                return callback(err);
 
-              api.post('/submission', {json:submission}, function (err, rsp) {
-                if (err)
-                  return callback(err);
-
-                callback(null, (rsp||{}).id);
-              });
+              callback(null, (rsp||{}).id);
             });
           });
         });
@@ -259,7 +258,7 @@ exports = module.exports = function (config) {
           if (err)
             return end(err);
 
-          aestimia.process({submissionId: submissionId}, submission.review._id, logger);
+          aestimia.process({submissionId: submissionId}, submission.review._id, LOGGER);
           end();
         });
       });

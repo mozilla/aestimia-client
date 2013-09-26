@@ -88,6 +88,7 @@ exports._Model = Model;
 const Application = new Model('Application', {
   description: {type: 'string', required: true},
   applicant: {type: 'Applicant'},
+  meta: {type: null},
   getApplicant: {type: 'function'},
   badge: {type: 'Badge'},
   getBadge: {type: 'function'},

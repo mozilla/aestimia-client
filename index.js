@@ -106,6 +106,10 @@ exports = module.exports = function (config) {
               });
             }
 
+            if (application.meta) {
+              submission.meta = application.meta;
+            }
+
             evidence.forEach(function(item, index) {
               var type = item.mediaType.split('/')[0];
               if (type !== 'image') type = 'link';

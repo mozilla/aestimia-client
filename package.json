@@ -1,6 +1,6 @@
 {
   "name": "aestimia-client",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A client for the Aestimia API",
   "main": "index.js",
   "author": "Mozilla Open Badges http://openbadges.org",
